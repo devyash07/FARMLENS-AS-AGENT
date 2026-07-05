@@ -314,6 +314,12 @@ Potential enhancements include:
 
 ---
 
+# Demo
+
+🔗 [Live Demo](https://github.com/devyash07/FARMLENS-AS-AGENT)
+
+---
+
 # Authors
 
 FarmLens AI
