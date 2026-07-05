@@ -241,6 +241,33 @@ http://localhost:8080
 
 ---
 
+# Installation
+
+## Prerequisites
+
+- Python 3.12+
+- Node.js 18+
+- npm or bun
+
+## Backend Setup
+
+```bash
+cd backend
+python3 -m venv venv312
+source venv312/bin/activate
+pip install -r requirements.txt
+```
+
+## Frontend Setup
+
+```bash
+npm install
+# or
+bun install
+```
+
+---
+
 # Running Locally
 
 Backend
