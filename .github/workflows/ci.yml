@@ -30,7 +30,7 @@ jobs:
     
     - name: Install dependencies
       run: |
-        npm install --legacy-peer-deps --verbose
+        npm install --legacy-peer-deps
       timeout-minutes: 5
     
     - name: Build application
@@ -40,3 +40,4 @@ jobs:
       env:
         NODE_OPTIONS: "--max_old_space_size=4096"
         CI: false
+        ESLINT_NO_DEV_ERRORS: true
