@@ -404,11 +404,11 @@ def _color_based_predict(image_bytes: bytes) -> dict:
             # Check for dark galls OR brown tumors (smut starts brown, turns black)
             if crop == "Corn" and (dark_ratio > 0.15 or (brown_ratio > 0.2 and yellow_ratio > 0.15)):
                 disease = "Corn Smut"
-                severity = 65  # Fixed severity for Corn Smut
+                severity = min(95, int((dark_ratio + brown_ratio) * 120))
                 explanation = f"Detected black/brown galls or tumors (corn smut) on corn plant. Dark areas: ~{int(dark_ratio*100)}%, Brown areas: ~{int(brown_ratio*100)}%."
                 treatment = "Immediately remove and destroy infected ears or galls before they rupture and release black teliospores (spores). Burn or bury infected material deep in soil. Do not compost. Apply fungicides containing azoxystrobin or propiconazole at early infection stage. For prevention: plant resistant corn varieties, practice 2-3 year crop rotation, avoid excessive nitrogen fertilization which promotes smut, and maintain balanced soil fertility."
-                confidence = 98  # Fixed confidence for Corn Smut
-                print(f"[Color Analysis] Detected Corn Smut - dark_ratio:{dark_ratio:.2f}, brown_ratio:{brown_ratio:.2f}, Severity: {severity}%, Confidence: {confidence}%")
+                confidence = min(92, 75 + int(severity / 4))
+                print(f"[Color Analysis] Detected Corn Smut - dark_ratio:{dark_ratio:.2f}, brown_ratio:{brown_ratio:.2f}, severity:{severity}%, confidence:{confidence}%")
             elif brown_ratio > 0.15 or dark_ratio > 0.2:
                 # Check for coffee rust first (orange/brown spots on coffee)
                 if crop == "Coffee" and brown_ratio > 0.15 and yellow_ratio > 0.1:
@@ -1074,10 +1074,6 @@ def _calculate_severity_from_image(image_bytes: bytes, ai_result: dict) -> Optio
         
         disease = ai_result.get("disease", "").lower()
         crop = ai_result.get("crop", "").lower()
-        
-        # Special case: Corn Smut - ALWAYS return 65%
-        if "smut" in disease and crop == "corn":
-            return 65
         
         # Calculate severity based on affected area
         healthy_ratio = green_ratio
